@@ -392,7 +392,7 @@ async def keep_alive() -> None:
             raise
         except Exception:
             logger.exception("Keep alive ping failed")
-        await asyncio.sleep(600)  # 10 минут
+        await asyncio.sleep(3600)  # 10 минут
 
 
 async def main() -> None:
