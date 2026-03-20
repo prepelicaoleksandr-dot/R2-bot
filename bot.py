@@ -383,12 +383,25 @@ async def on_startup() -> None:
     logger.info("Бот запущен. Вызовите /init_status в нужной теме.")
 
 
+async def keep_alive() -> None:
+    while True:
+        try:
+            logger.info("Keep alive ping")
+            await bot.get_me()
+        except asyncio.CancelledError:
+            raise
+        except Exception:
+            logger.exception("Keep alive ping failed")
+        await asyncio.sleep(600)  # 10 минут
+
+
 async def main() -> None:
     if TOKEN == "PASTE_YOUR_TOKEN_HERE":
         raise RuntimeError("Укажите BOT_TOKEN в переменных окружения.")
 
     logger.info("Запуск бота...")
     await on_startup()
+    asyncio.create_task(keep_alive())
     await dp.start_polling(bot)
 
 
